@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+@theme {
+  --color-noir: #0a0a0a;
+  --color-antracite: #141416;
+  --color-carbone: #1c1c1e;
+  --color-bordeaux: #4a0e0e;
+  --color-blood: #6b1220;
+  --color-blood-light: #8a1c2b;
+  --color-ash: #6e6e73;
+  --color-ash-light: #a8a8ad;
+  --color-fog: #d4d4d8;
+
+  --font-display: "Cormorant Garamond", "Playfair Display", serif;
+  --font-body: "Inter", "Segoe UI", sans-serif;
+
+  --shadow-deep: 0 10px 40px -10px rgba(0, 0, 0, 0.9), 0 2px 8px rgba(0, 0, 0, 0.6);
+  --shadow-glow-red: 0 0 18px rgba(107, 18, 32, 0.35), 0 0 2px rgba(107, 18, 32, 0.5);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-noir);
+  color: var(--color-fog);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: 0.01em;
+}
+
+::selection {
+  background-color: var(--color-bordeaux);
+  color: #f4f4f5;
+}
+
+.ritual-border {
+  border: 1px solid rgba(107, 18, 32, 0.25);
+}
+
+.ritual-glow {
+  box-shadow: var(--shadow-glow-red);
+}
+
+.ritual-card {
+  background: linear-gradient(160deg, rgba(28, 28, 30, 0.9), rgba(10, 10, 10, 0.95));
+  border: 1px solid rgba(107, 18, 32, 0.2);
+  box-shadow: var(--shadow-deep);
+  border-radius: 0.75rem;
+}
+
+.ritual-overlay-gradient {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.65) 0%,
+    rgba(10, 10, 10, 0.85) 55%,
+    rgba(0, 0, 0, 0.97) 100%
+  );
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  45% { opacity: 0.85; }
+  50% { opacity: 0.6; }
+  55% { opacity: 0.9; }
+}
+
+.animate-flicker {
+  animation: flicker 4.5s ease-in-out infinite;
+}
+
+.scrollbar-ritual::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-ritual::-webkit-scrollbar-thumb {
+  background-color: var(--color-bordeaux);
+  border-radius: 3px;
+}
+@keyframes soundPulse {
+  0%, 100% {
+    transform: scaleY(0.55);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scaleY(1.15);
+    opacity: 1;
+  }
+}
+
+.soundbar-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.soundbar-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -5px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: linear-gradient(180deg, #a11f31, #6b1220);
+  box-shadow: 0 0 16px rgba(107, 18, 32, 0.45);
+  cursor: pointer;
+}
+
+.soundbar-range::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.soundbar-range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #a11f31, #6b1220);
+  box-shadow: 0 0 16px rgba(107, 18, 32, 0.45);
+  cursor: pointer;
+}
+
+.soundbar-range:focus-visible {
+  outline: none;
+}
