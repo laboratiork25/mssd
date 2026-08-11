@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import Input from "../ui/Input";
 import Textarea from "../ui/Textarea";
 import Select from "../ui/Select";
@@ -298,6 +299,20 @@ export default function ReportForm() {
   return (
     <div className="space-y-6">
       <Card className="max-w-3xl mx-auto">
+        {/* Banner animato satanico */}
+        <div className="mb-8 -mx-6 -mt-6">
+          <div className="relative h-32 md:h-40 w-full">
+            <Image
+              src="/media/gifs/banner.gif"
+              alt="Rituale di segnalazione"
+              fill
+              className="object-cover object-center opacity-85"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-noir/90 via-noir/40 to-transparent" />
+          </div>
+        </div>
+
         <div className="mb-8">
           <p className="text-xs uppercase tracking-[0.25em] text-blood-light mb-3">
             Invio riservato
@@ -308,10 +323,10 @@ export default function ReportForm() {
           </h1>
 
           <p className="text-ash-light leading-relaxed">
-            Compila ogni sezione con informazioni precise, oggettive e
-            verificabili. La segnalazione viene inoltrata in forma riservata al
-            team di revisione: non è una pubblicazione pubblica e non produce
-            conseguenze automatiche.
+            Ogni segnalazione entra in un rituale interno di revisione, mai in una 
+            gogna pubblica. Compila ogni sezione con informazioni precise, oggettive 
+            e verificabili: il circolo amministrativo prenderà visione solo in forma 
+            riservata e valuterà eventuali passi successivi.
           </p>
         </div>
 
@@ -324,7 +339,8 @@ export default function ReportForm() {
             Le segnalazioni con recapiti falsi, incompleti, non verificabili,
             informazioni intenzionalmente fuorvianti o materiale non pertinente
             potrebbero non essere prese in considerazione. Invia solo elementi
-            necessari alla revisione e non condividere dati sensibili superflui.
+            necessari alla revisione e non condividere dati sensibili superflui:
+            ciò che entra qui viene trattato con rigore, non con clamore.
           </p>
         </div>
 
@@ -372,7 +388,8 @@ export default function ReportForm() {
                 Non caricare immagini o video intimi, sessuali o espliciti.
                 Inserisci soltanto contesto, riferimenti, screenshot non
                 espliciti, URL di segnalazione o informazioni utili al team per
-                avviare una revisione riservata.
+                avviare una revisione riservata. Il rispetto delle persone
+                coinvolte viene prima di qualsiasi curiosità esterna.
               </p>
             </div>
           )}
@@ -406,8 +423,8 @@ export default function ReportForm() {
             </legend>
 
             <p className="mb-4 text-sm text-ash">
-              Indica il tuo rapporto con il caso, così il team può valutare
-              correttamente i contatti necessari.
+              Indica il tuo rapporto con il caso, così il team può calibrare
+              correttamente il contatto e la lettura della pratica.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -456,7 +473,8 @@ export default function ReportForm() {
 
           <p className="-mt-3 text-xs text-ash">
             Il recapito serve esclusivamente se il team deve chiedere
-            chiarimenti sulla segnalazione.
+            chiarimenti sulla segnalazione. Non viene usato per contatti
+            massivi o comunicazioni esterne.
           </p>
 
           {isThirdPartyReport && (
@@ -468,7 +486,8 @@ export default function ReportForm() {
                 <p className="text-xs text-ash-light">
                   Essendo una segnalazione per conto terzi, fornisci un contatto
                   email o telefonico della persona coinvolta, se autorizzato e
-                  necessario alla revisione.
+                  necessario alla revisione. Nessun contatto viene usato per
+                  esposizioni pubbliche.
                 </p>
               </div>
 
@@ -592,7 +611,7 @@ export default function ReportForm() {
           <p className="text-ash-light mb-5">
             La pratica è stata inoltrata al team di revisione interno.
             Conserva l&apos;ID pratica se devi fare riferimento alla
-            segnalazione in futuro.
+            segnalazione in futuro: è la chiave unica per ogni consulto successivo.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-4 text-sm">
