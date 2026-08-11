@@ -241,7 +241,8 @@ export default function ReportForm() {
       : "";
 
   const isCaptchaEnabled = Boolean(turnstileSiteKey);
-
+console.log("DEBUG Turnstile site key:", turnstileSiteKey);
+console.log("DEBUG isCaptchaEnabled:", isCaptchaEnabled);
   return (
     <div className="space-y-6">
       <Card className="max-w-3xl mx-auto">
