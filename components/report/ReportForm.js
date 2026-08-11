@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import Input from "../ui/Input";
 import Textarea from "../ui/Textarea";
 import Select from "../ui/Select";
@@ -50,6 +50,14 @@ function isValidContact(value) {
   const trimmed = value.trim();
   return isValidEmail(trimmed) || isValidPhone(trimmed);
 }
+
+// Site key per il frontend (NEXT_PUBLIC_*)
+const turnstileSiteKey =
+  typeof process.env !== "undefined"
+    ? (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "")
+    : "";
+
+const isCaptchaEnabled = Boolean(turnstileSiteKey);
 
 export default function ReportForm() {
   const [form, setForm] = useState({
@@ -234,15 +242,59 @@ export default function ReportForm() {
     }
   }
 
-  // Site key per il frontend (deve essere NEXT_PUBLIC_*)
-  const turnstileSiteKey =
-    typeof process.env !== "undefined"
-      ? (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "")
-      : "";
+  // TURNSTILE: render robusto anche senza refresh
+  const captchaContainerRef = useRef(null);
+  const turnstileWidgetIdRef = useRef(null);
 
-  const isCaptchaEnabled = Boolean(turnstileSiteKey);
-console.log("DEBUG Turnstile site key:", turnstileSiteKey);
-console.log("DEBUG isCaptchaEnabled:", isCaptchaEnabled);
+  useEffect(() => {
+    if (!isCaptchaEnabled) return;
+
+    let intervalId;
+
+    const tryRender = () => {
+      if (!captchaContainerRef.current) return;
+      if (turnstileWidgetIdRef.current !== null) return;
+      if (typeof window === "undefined" || !window.turnstile) return;
+
+      turnstileWidgetIdRef.current = window.turnstile.render(
+        captchaContainerRef.current,
+        {
+          sitekey: turnstileSiteKey,
+          theme: "dark",
+          callback: (token) => {
+            setCaptchaToken(token);
+            setCaptchaError("");
+          },
+          "error-callback": () => {
+            setCaptchaToken("");
+            setCaptchaError(
+              "Il controllo CAPTCHA non è disponibile al momento. Riprova tra poco."
+            );
+          },
+          "expired-callback": () => {
+            setCaptchaToken("");
+            setCaptchaError(
+              "Il controllo CAPTCHA è scaduto. Completa di nuovo la verifica."
+            );
+          },
+        }
+      );
+
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+
+    // prova subito
+    tryRender();
+    // e riprova finché lo script non è pronto
+    intervalId = setInterval(tryRender, 300);
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, []);
+
   return (
     <div className="space-y-6">
       <Card className="max-w-3xl mx-auto">
@@ -495,15 +547,7 @@ console.log("DEBUG isCaptchaEnabled:", isCaptchaEnabled);
             </p>
 
             {isCaptchaEnabled ? (
-              <div
-                className="cf-turnstile"
-                data-sitekey={turnstileSiteKey}
-                data-callback={(token) => {
-                  setCaptchaToken(token);
-                  setCaptchaError("");
-                }}
-                data-theme="dark"
-              />
+              <div ref={captchaContainerRef} />
             ) : (
               <p className="text-xs text-blood-light">
                 CAPTCHA non inizializzato: manca la NEXT_PUBLIC_TURNSTILE_SITE_KEY.
@@ -560,7 +604,3 @@ console.log("DEBUG isCaptchaEnabled:", isCaptchaEnabled);
             </div>
           </div>
         </Card>
-      )}
-    </div>
-  );
-}
