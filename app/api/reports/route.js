@@ -105,8 +105,6 @@ async function verifyTurnstileToken(token, remoteIp) {
     );
 
     const data = await res.json();
-    console.log("DEBUG Turnstile verify:", res.status, data);
-
     return !!data.success;
   } catch (error) {
     console.error("Errore verifica Turnstile:", error);
@@ -119,7 +117,6 @@ export async function POST(request) {
     const body = await request.json();
 
     const errors = validatePayload(body);
-
     if (errors.length > 0) {
       return NextResponse.json(
         { message: errors.join(" ") },
@@ -142,7 +139,9 @@ export async function POST(request) {
       );
     }
 
-    const caseId = `MOSS-${new Date().getFullYear()}-${nanoid(7).toUpperCase()}`;
+    const year = new Date().getFullYear();
+    const randomId = nanoid(7).toUpperCase();
+    const caseId = `MOSS-${year}-${randomId}`;
 
     const payload = {
       title: body.title.trim(),
@@ -161,15 +160,14 @@ export async function POST(request) {
       accuracyConsent: true,
     };
 
-    await sendTelegramReportMessage({
-      caseId,
-      payload,
-    });
-
-    // stato iniziale "nuova" salvato in Redis
     await saveReportStatus({
       caseId,
       status: "nuova",
+    });
+
+    await sendTelegramReportMessage({
+      caseId,
+      payload,
     });
 
     return NextResponse.json(
