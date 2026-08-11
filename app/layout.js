@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Cormorant_Garamond, Inter } from "next/font/google";
+import Script from "next/script";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import Soundbar from "../components/media/Soundbar";
@@ -35,6 +36,12 @@ export default function RootLayout({ children }) {
         <main className="flex-1 pb-28 md:pb-32">{children}</main>
         <Footer />
         <Soundbar />
+        {/* Script Cloudflare Turnstile */}
+        <Script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+          async
+          defer
+        />
       </body>
     </html>
   );

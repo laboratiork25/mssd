@@ -7,26 +7,18 @@ import Card from "../ui/Card";
 import ReportStatusBadge from "./ReportStatusBadge";
 
 export default function StatusCheckForm() {
-  const [form, setForm] = useState({
-    caseId: "",
-    accessCode: "",
-  });
-
+  const [caseId, setCaseId] = useState("");
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [result, setResult] = useState(null);
 
-  function updateField(name, value) {
-    setForm((prev) => ({ ...prev, [name]: value }));
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit(event) {
+    event.preventDefault();
     setFeedback("");
     setResult(null);
 
-    if (!form.caseId.trim() || !form.accessCode.trim()) {
-      setFeedback("Inserisci ID pratica e codice di accesso.");
+    if (!caseId.trim()) {
+      setFeedback("Inserisci l'ID pratica per continuare.");
       return;
     }
 
@@ -38,13 +30,13 @@ export default function StatusCheckForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ caseId }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || "Pratica non trovata o accesso non valido.");
+        throw new Error(data.message || "Pratica non trovata.");
       }
 
       setResult(data.report);
@@ -62,26 +54,18 @@ export default function StatusCheckForm() {
           Verifica stato pratica
         </h1>
         <p className="text-ash-light mb-8">
-          Inserisci i dati ricevuti al momento dell'invio per consultare lo
-          stato attuale della segnalazione.
+          Inserisci l&apos;ID pratica ricevuto al momento dell&apos;invio. Il
+          sito mostra solo lo stato e le eventuali date associate, senza
+          esporre dettagli sensibili della segnalazione.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <Input
             label="ID pratica"
             name="caseId"
-            value={form.caseId}
-            onChange={(e) => updateField("caseId", e.target.value)}
+            value={caseId}
+            onChange={(event) => setCaseId(event.target.value)}
             placeholder="Es. MOSS-2026-AB12CD"
-            required
-          />
-
-          <Input
-            label="Codice accesso"
-            name="accessCode"
-            value={form.accessCode}
-            onChange={(e) => updateField("accessCode", e.target.value)}
-            placeholder="Inserisci il codice ricevuto"
             required
           />
 
@@ -102,7 +86,12 @@ export default function StatusCheckForm() {
               <p className="text-xs uppercase tracking-[0.25em] text-ash mb-2">
                 Pratica verificata
               </p>
-              <h2 className="font-display text-3xl text-fog">{result.title}</h2>
+              <h2 className="font-display text-3xl text-fog">
+                {result.title}
+              </h2>
+              <p className="text-xs text-ash mt-1">
+                ID pratica: <code>{result.caseId}</code>
+              </p>
             </div>
             <ReportStatusBadge status={result.status} />
           </div>
@@ -120,14 +109,17 @@ export default function StatusCheckForm() {
                 Ultimo aggiornamento
               </p>
               <p className="text-fog">
-                {new Date(result.updatedAt).toLocaleString("it-IT")}
+                {result.updatedAt
+                  ? new Date(result.updatedAt).toLocaleString("it-IT")
+                  : "Non disponibile"}
               </p>
             </div>
           </div>
 
           <p className="text-ash-light text-sm mt-5">
-            Per tutela della riservatezza, questa vista mostra solo i dati
-            strettamente necessari al tracciamento dello stato.
+            Per tutela della riservatezza, questa vista mostra solo lo stato e
+            le informazioni basilari associate alla pratica. Per dettagli
+            ulteriori, il team contatterà direttamente i recapiti forniti.
           </p>
         </Card>
       )}

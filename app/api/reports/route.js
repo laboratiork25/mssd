@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import { NextResponse } from "next/server";
 import { sendTelegramReportMessage } from "../../../lib/telegram";
+import { saveReportStatus } from "../../../lib/redis";
 
 function isValidEmail(value = "") {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(value.trim());
@@ -68,10 +69,49 @@ function validatePayload(body) {
   }
 
   if (body.accuracyConsent !== true) {
-    errors.push("Conferma di correttezza delle informazioni obbligatoria.");
+    errors.push(
+      "Conferma di correttezza delle informazioni obbligatoria."
+    );
+  }
+
+  if (!body.captchaToken) {
+    errors.push("Captcha mancante.");
   }
 
   return errors;
+}
+
+async function verifyTurnstileToken(token, remoteIp) {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) {
+    console.error("TURNSTILE_SECRET_KEY mancante nelle env.");
+    return false;
+  }
+
+  try {
+    const res = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          secret,
+          response: token,
+          remoteip: remoteIp || "",
+        }).toString(),
+      }
+    );
+
+    const data = await res.json();
+    console.log("DEBUG Turnstile verify:", res.status, data);
+
+    return !!data.success;
+  } catch (error) {
+    console.error("Errore verifica Turnstile:", error);
+    return false;
+  }
 }
 
 export async function POST(request) {
@@ -83,6 +123,21 @@ export async function POST(request) {
     if (errors.length > 0) {
       return NextResponse.json(
         { message: errors.join(" ") },
+        { status: 400 }
+      );
+    }
+
+    const captchaOk = await verifyTurnstileToken(
+      body.captchaToken,
+      request.headers.get("x-forwarded-for")
+    );
+
+    if (!captchaOk) {
+      return NextResponse.json(
+        {
+          message:
+            "Verifica CAPTCHA non riuscita. Riprova, assicurandoti di completare il controllo.",
+        },
         { status: 400 }
       );
     }
@@ -109,6 +164,12 @@ export async function POST(request) {
     await sendTelegramReportMessage({
       caseId,
       payload,
+    });
+
+    // stato iniziale "nuova" salvato in Redis
+    await saveReportStatus({
+      caseId,
+      status: "nuova",
     });
 
     return NextResponse.json(
