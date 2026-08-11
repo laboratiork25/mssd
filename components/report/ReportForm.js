@@ -234,10 +234,13 @@ export default function ReportForm() {
     }
   }
 
+  // Site key per il frontend (deve essere NEXT_PUBLIC_*)
   const turnstileSiteKey =
-    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ||
-    process.env.TURNSTILE_SITE_KEY ||
-    "";
+    typeof process.env !== "undefined"
+      ? (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "")
+      : "";
+
+  const isCaptchaEnabled = Boolean(turnstileSiteKey);
 
   return (
     <div className="space-y-6">
@@ -489,7 +492,8 @@ export default function ReportForm() {
             <p className="text-xs uppercase tracking-[0.22em] text-ash mb-1">
               Controllo CAPTCHA
             </p>
-            {turnstileSiteKey ? (
+
+            {isCaptchaEnabled ? (
               <div
                 className="cf-turnstile"
                 data-sitekey={turnstileSiteKey}
@@ -501,9 +505,10 @@ export default function ReportForm() {
               />
             ) : (
               <p className="text-xs text-blood-light">
-                CAPTCHA non inizializzato: manca la TURNSTILE_SITE_KEY.
+                CAPTCHA non inizializzato: manca la NEXT_PUBLIC_TURNSTILE_SITE_KEY.
               </p>
             )}
+
             {captchaError && (
               <p className="text-xs text-blood-light">{captchaError}</p>
             )}
