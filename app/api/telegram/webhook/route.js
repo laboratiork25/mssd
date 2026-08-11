@@ -6,7 +6,7 @@ import {
   sendStatusSelectionMessage,
   sendTelegramEventUpdate,
   sendTelegramStatusUpdate,
-} from "../../../../../lib/telegramAdmin";
+} from "../../../../lib/telegramAdmin";
 
 export const runtime = "nodejs";
 
