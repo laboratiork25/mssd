@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Input from "../ui/Input";
 import Button from "../ui/Button";
 import Card from "../ui/Card";
@@ -50,19 +51,19 @@ export default function StatusCheckForm() {
   function renderStatusDescription(status) {
     switch (status) {
       case "nuova":
-        return "La pratica è stata ricevuta e messa in coda per una prima revisione formale.";
+        return "La pratica è stata evocata e ha varcato la soglia del sistema. È in attesa della prima lettura rituale.";
       case "in_revisione":
-        return "La pratica è in analisi da parte del team interno. Potrebbero essere richiesti chiarimenti ai recapiti forniti.";
+        return "La pratica è sul tavolo del circolo interno: i dettagli sono in analisi e potrebbero richiedere chiarimenti ai recapiti forniti.";
       case "confermata":
-        return "La pratica è stata valutata come fondata rispetto ai criteri interni della piattaforma.";
+        return "La pratica è stata considerata fondata rispetto ai criteri interni della piattaforma. Nessuna esposizione pubblica, solo interventi mirati.";
       case "respinta":
-        return "La pratica non è stata ritenuta fondata o sufficientemente verificabile sulla base delle informazioni disponibili.";
+        return "La pratica non è stata ritenuta sufficiente o verificabile per procedere oltre. Rimane archiviata, ma non genera azioni.";
       case "chiusa":
-        return "La pratica è stata chiusa dal team. Non sono previsti ulteriori passaggi su questo ID.";
+        return "Il rituale su questo ID è concluso: la pratica è chiusa e non sono previsti ulteriori passaggi, salvo riaperture straordinarie.";
       case "evento_programmato":
-        return "È stato fissato un evento collegato a questa pratica (es. call o approfondimento interno) nella data e ora indicate.";
+        return "È stato fissato un evento collegato a questa pratica (call, revisione approfondita o incontro interno) nella data e ora indicate.";
       default:
-        return "La pratica è registrata nel sistema. Lo stato dettagliato è in aggiornamento interno.";
+        return "La pratica è registrata nel sistema. Lo stato dettagliato è in aggiornamento interno, lontano da occhi indiscreti.";
     }
   }
 
@@ -70,12 +71,12 @@ export default function StatusCheckForm() {
     if (!report.eventDate && !report.eventTime) return null;
 
     return (
-      <div className="ritual-border rounded-lg p-4 bg-black/25 mt-4">
+      <div className="ritual-border rounded-lg p-4 bg-black/30 mt-4">
         <p className="text-xs uppercase tracking-widest text-ash mb-2">
           Evento programmato
         </p>
         <p className="text-sm text-fog">
-          Data:{" "}
+          Data rituale:{" "}
           <span className="font-medium">
             {report.eventDate}
           </span>{" "}
@@ -85,8 +86,9 @@ export default function StatusCheckForm() {
           </span>
         </p>
         <p className="text-xs text-ash-light mt-2">
-          Questo evento è registrato internamente e non viene esposto in modo pubblico. 
-          Eventuali dettagli operativi vengono gestiti direttamente dal team.
+          L&apos;evento è registrato solo all&apos;interno del circolo amministrativo. 
+          Nessuna agenda pubblica, nessuna esposizione: gli eventuali dettagli vengono comunicati 
+          direttamente ai recapiti coinvolti.
         </p>
       </div>
     );
@@ -94,14 +96,28 @@ export default function StatusCheckForm() {
 
   return (
     <div className="space-y-6">
-      <Card className="max-w-2xl mx-auto">
+      <Card className="max-w-2xl mx-auto overflow-hidden">
+        {/* Banner animato satanico */}
+        <div className="mb-6 -mx-6 -mt-6">
+          <div className="relative h-32 md:h-40 w-full">
+            <Image
+              src="/media/gifs/banner2.gif"
+              alt="Rituale di verifica stato"
+              fill
+              className="object-cover object-center opacity-80"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-noir/90 via-noir/40 to-transparent" />
+          </div>
+        </div>
+
         <h1 className="font-display text-4xl text-fog mb-3">
           Verifica stato pratica
         </h1>
-        <p className="text-ash-light mb-8">
-          Inserisci l&apos;ID pratica ricevuto al momento dell&apos;invio. Questa pagina mostra 
-          esclusivamente lo stato e le eventuali date associate (come ultimi aggiornamenti o eventi), 
-          senza esporre contenuti sensibili della segnalazione.
+        <p className="text-ash-light mb-8 text-sm md:text-base">
+          Inserisci l&apos;ID pratica ricevuto al momento dell&apos;invio. Questa vista 
+          non è una gogna pubblica, ma un semplice specchio dello stato interno: mostra solo 
+          progressi, date e tracce temporali, senza mai esporre contenuti sensibili.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -119,7 +135,7 @@ export default function StatusCheckForm() {
           )}
 
           <Button type="submit" disabled={loading}>
-            {loading ? "Verifica in corso..." : "Controlla stato"}
+            {loading ? "Consulto in corso..." : "Interroga lo stato"}
           </Button>
         </form>
       </Card>
@@ -129,7 +145,7 @@ export default function StatusCheckForm() {
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-5 mb-5">
             <div>
               <p className="text-xs uppercase tracking-[0.25em] text-ash mb-2">
-                Pratica verificata
+                Pratica evocata
               </p>
               <h2 className="font-display text-3xl text-fog">
                 {result.title}
@@ -159,7 +175,7 @@ export default function StatusCheckForm() {
 
             <div className="ritual-border rounded-lg p-4 bg-black/20">
               <p className="text-xs uppercase tracking-widest text-ash mb-2">
-                Ultimo aggiornamento interno
+                Ultimo movimento interno
               </p>
               <p className="text-fog">
                 {result.updatedAt
@@ -167,8 +183,8 @@ export default function StatusCheckForm() {
                   : "Non disponibile"}
               </p>
               <p className="text-xs text-ash-light mt-2">
-                Indica l&apos;ultimo momento in cui la pratica è stata toccata dal team 
-                (cambio di stato o registrazione di un evento).
+                Indica l&apos;ultima volta in cui la pratica è stata toccata: 
+                cambio di stato, registrazione di evento o altra azione riservata.
               </p>
             </div>
           </div>
@@ -176,10 +192,10 @@ export default function StatusCheckForm() {
           {renderEventInfo(result)}
 
           <p className="text-ash-light text-sm mt-5">
-            Per tutela della riservatezza, questa vista mostra solo lo stato sintetico 
-            e le informazioni temporali collegate. Qualsiasi decisione operativa o richiesta 
-            di chiarimenti avviene esclusivamente tramite i recapiti forniti nella segnalazione 
-            e non attraverso il sito pubblico.
+            Nota rituale: il passaggio tra stati non è istantaneo. A seconda della gravità e del 
+            carico di segnalazioni, l&apos;aggiornamento interno può richiedere diverse ore. 
+            Non serve sollecitare pubblicamente: se qualcosa richiede attenzione, il circolo ti 
+            contatterà direttamente ai recapiti indicati.
           </p>
         </Card>
       )}
