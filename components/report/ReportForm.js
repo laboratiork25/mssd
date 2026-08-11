@@ -604,3 +604,7 @@ export default function ReportForm() {
             </div>
           </div>
         </Card>
+      )}
+    </div>
+  );
+}
