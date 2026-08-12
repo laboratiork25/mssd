@@ -39,7 +39,7 @@ function SpeakerIcon({ muted = false }) {
 
 function CloseIcon() {
   return (
-    <span className="relative block h-4 w-4" aria-hidden="true">
+    <span className="relative block h-3.5 w-3.5 md:h-4 md:w-4" aria-hidden="true">
       <span className="absolute left-0 top-1/2 h-[1.5px] w-full -translate-y-1/2 rotate-45 rounded bg-fog" />
       <span className="absolute left-0 top-1/2 h-[1.5px] w-full -translate-y-1/2 -rotate-45 rounded bg-fog" />
     </span>
@@ -58,11 +58,11 @@ function Notification({ open, onKeep, onCloseAnyway }) {
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
       <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-blood/30 bg-black/90 shadow-[0_20px_60px_rgba(0,0,0,0.75)]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(107,18,32,0.16),transparent_45%)]" />
-        <div className="relative p-5">
+        <div className="relative p-4 md:p-5">
           <p className="text-[10px] uppercase tracking-[0.28em] text-blood-light/90">
             Consiglio immersivo
           </p>
-          <h4 className="mt-2 font-display text-2xl text-fog">
+          <h4 className="mt-2 font-display text-xl md:text-2xl text-fog">
             Vuoi attivare l’esperienza audio?
           </h4>
           <p className="mt-3 text-sm leading-relaxed text-ash-light">
@@ -363,73 +363,75 @@ export default function Soundbar() {
       />
 
       {visible && (
-        <div className="fixed bottom-4 left-1/2 z-50 w-[calc(100%-1.5rem)] max-w-4xl -translate-x-1/2 px-1">
+        <div className="fixed bottom-2 left-1/2 z-50 w-[calc(100%-1rem)] max-w-4xl -translate-x-1/2 sm:bottom-4 sm:w-[calc(100%-1.5rem)] px-0.5 sm:px-1">
           <div className="relative overflow-hidden rounded-2xl border border-blood/25 bg-black/70 backdrop-blur-xl shadow-[0_10px_50px_rgba(0,0,0,0.55)]">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(107,18,32,0.18),transparent_35%),linear-gradient(180deg,rgba(255,255,255,0.02),transparent_100%)]" />
-            <div className="relative p-3 md:p-4">
+            <div className="relative p-2.5 sm:p-3 md:p-4">
               <button
                 type="button"
                 onClick={requestClose}
-                className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/8 bg-white/5 text-fog hover:bg-white/10 transition-all"
+                className="absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/8 bg-white/5 text-fog hover:bg-white/10 transition-all sm:right-3 sm:top-3 sm:h-9 sm:w-9"
                 aria-label="Chiudi soundbar"
               >
                 <CloseIcon />
               </button>
 
-              <div className="mb-4 text-center pr-10">
-                <p className="text-[10px] md:text-xs uppercase tracking-[0.28em] text-blood-light/90">
+              <div className="mb-3 text-center pr-8 sm:pr-10 md:mb-4">
+                <p className="text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.2em] sm:tracking-[0.28em] text-blood-light/90">
                   Ritual Ambience
                 </p>
-                <h3 className="mt-1 font-display text-lg md:text-xl text-fog">
+                <h3 className="mt-1 font-display text-base sm:text-lg md:text-xl text-fog">
                   For the last time
                 </h3>
               </div>
 
-              <div className="grid grid-cols-[auto_auto_auto_1fr_auto] items-center gap-2 md:gap-3">
-                <button
-                  type="button"
-                  onClick={isPlaying ? handlePause : handlePlay}
-                  className={`group relative inline-flex h-12 w-12 items-center justify-center rounded-full border transition-all duration-300 ${
-                    isPlaying
-                      ? "border-blood/50 bg-bordeaux text-fog shadow-[0_0_18px_rgba(107,18,32,0.35)]"
-                      : "border-blood/30 bg-carbone/90 text-fog hover:bg-bordeaux/90 hover:border-blood-light"
-                  }`}
-                  aria-label={isPlaying ? "Metti in pausa" : "Riproduci"}
-                >
-                  <span className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(138,28,43,0.22),transparent_65%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  {isPlaying ? (
-                    <span className="relative flex gap-1">
-                      <span className="h-4 w-1 rounded bg-fog" />
-                      <span className="h-4 w-1 rounded bg-fog" />
-                    </span>
-                  ) : (
-                    <span className="relative ml-0.5 h-0 w-0 border-y-[8px] border-y-transparent border-l-[13px] border-l-fog" />
-                  )}
-                </button>
+              <div className="flex flex-col gap-3 md:grid md:grid-cols-[auto_auto_auto_1fr_auto] md:items-center md:gap-3">
+                <div className="flex items-center justify-center gap-2 md:contents">
+                  <button
+                    type="button"
+                    onClick={isPlaying ? handlePause : handlePlay}
+                    className={`group relative inline-flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full border transition-all duration-300 ${
+                      isPlaying
+                        ? "border-blood/50 bg-bordeaux text-fog shadow-[0_0_18px_rgba(107,18,32,0.35)]"
+                        : "border-blood/30 bg-carbone/90 text-fog hover:bg-bordeaux/90 hover:border-blood-light"
+                    }`}
+                    aria-label={isPlaying ? "Metti in pausa" : "Riproduci"}
+                  >
+                    <span className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(138,28,43,0.22),transparent_65%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    {isPlaying ? (
+                      <span className="relative flex gap-1">
+                        <span className="h-3.5 w-1 md:h-4 rounded bg-fog" />
+                        <span className="h-3.5 w-1 md:h-4 rounded bg-fog" />
+                      </span>
+                    ) : (
+                      <span className="relative ml-0.5 h-0 w-0 border-y-[7px] md:border-y-[8px] border-y-transparent border-l-[11px] md:border-l-[13px] border-l-fog" />
+                    )}
+                  </button>
 
-                <button
-                  type="button"
-                  onClick={handleStop}
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/8 bg-white/5 text-fog hover:bg-white/10 transition-all"
-                  aria-label="Ferma riproduzione"
-                >
-                  <span className="h-3.5 w-3.5 rounded-sm bg-fog" />
-                </button>
+                  <button
+                    type="button"
+                    onClick={handleStop}
+                    className="inline-flex h-9 w-9 md:h-11 md:w-11 items-center justify-center rounded-full border border-white/8 bg-white/5 text-fog hover:bg-white/10 transition-all"
+                    aria-label="Ferma riproduzione"
+                  >
+                    <span className="h-3 w-3 md:h-3.5 md:w-3.5 rounded-sm bg-fog" />
+                  </button>
 
-                <button
-                  type="button"
-                  onClick={toggleMute}
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/8 bg-white/5 text-fog hover:bg-white/10 transition-all"
-                  aria-label={isMuted ? "Riattiva audio" : "Silenzia audio"}
-                >
-                  <SpeakerIcon muted={isMuted} />
-                </button>
+                  <button
+                    type="button"
+                    onClick={toggleMute}
+                    className="inline-flex h-9 w-9 md:h-11 md:w-11 items-center justify-center rounded-full border border-white/8 bg-white/5 text-fog hover:bg-white/10 transition-all"
+                    aria-label={isMuted ? "Riattiva audio" : "Silenzia audio"}
+                  >
+                    <SpeakerIcon muted={isMuted} />
+                  </button>
+                </div>
 
                 <div className="min-w-0">
-                  <div className="mb-1.5 flex items-center justify-between gap-3 text-[11px] md:text-xs text-ash-light">
-                    <span>{formatTime(currentTime)}</span>
+                  <div className="mb-1.5 flex items-center justify-between gap-2 sm:gap-3 text-[10px] sm:text-[11px] md:text-xs text-ash-light">
+                    <span className="shrink-0">{formatTime(currentTime)}</span>
                     <span className="truncate text-center">{feedback}</span>
-                    <span>{formatTime(duration)}</span>
+                    <span className="shrink-0">{formatTime(duration)}</span>
                   </div>
 
                   <div className="relative">
@@ -476,7 +478,7 @@ export default function Soundbar() {
                 <button
                   type="button"
                   onClick={() => setExpanded((prev) => !prev)}
-                  className="rounded-full border border-white/8 bg-white/5 px-3 py-1.5 text-xs text-ash-light hover:bg-white/10 hover:text-fog transition-all"
+                  className="rounded-full border border-white/8 bg-white/5 px-3 py-1.5 text-[11px] sm:text-xs text-ash-light hover:bg-white/10 hover:text-fog transition-all"
                   aria-expanded={expanded}
                   aria-label={expanded ? "Riduci soundbar" : "Espandi soundbar"}
                 >
@@ -485,12 +487,12 @@ export default function Soundbar() {
               </div>
 
               {expanded && (
-                <div className="mt-4 grid grid-cols-1 md:grid-cols-[1fr_220px] gap-4 rounded-xl border border-white/6 bg-white/[0.03] p-4">
+                <div className="mt-4 grid grid-cols-1 md:grid-cols-[1fr_220px] gap-4 rounded-xl border border-white/6 bg-white/[0.03] p-3 sm:p-4">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.22em] text-ash mb-2">
+                    <p className="text-[11px] sm:text-xs uppercase tracking-[0.18em] sm:tracking-[0.22em] text-ash mb-2">
                       Modalità immersiva
                     </p>
-                    <p className="text-sm text-ash-light leading-relaxed">
+                    <p className="text-xs sm:text-sm text-ash-light leading-relaxed">
                       La soundbar riproduce un ambiente sonoro discreto da file
                       locale in <code className="text-fog">public/media/audio/ambient.mp3</code>,
                       pensato per accompagnare la navigazione senza risultare invadente.
