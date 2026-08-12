@@ -611,7 +611,7 @@ export default function ReportForm() {
           <p className="text-ash-light mb-5">
             La pratica è stata inoltrata al team di revisione interno.
             Conserva l&apos;ID pratica se devi fare riferimento alla
-            segnalazione in futuro: è la chiave unica per ogni consulto successivo.
+            segnalazione in futuro: è la chiave unica per ogni consulto successivo NON PERDERLO.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-1 gap-4 text-sm">

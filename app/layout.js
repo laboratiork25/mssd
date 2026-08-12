@@ -20,11 +20,11 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Mossad — Community Watch",
+  title: "Mossad",
   description:
     "Piattaforma di segnalazione e revisione manuale per la community. Serietà, controllo e riservatezza al centro del processo.",
   icons: {
-    icon: "/media/icons/favicon.png",
+    icon: "/media/images/logo.png",
   },
 };
 
