@@ -381,11 +381,8 @@ export default function Soundbar() {
                   Ritual Ambience
                 </p>
                 <h3 className="mt-1 font-display text-lg md:text-xl text-fog">
-                  Love Bastards — Slowed
+                  For the last time
                 </h3>
-                <p className="mt-1 text-[11px] md:text-xs text-ash-light">
-                  Traccia immersiva locale, con controlli discreti e non invasivi.
-                </p>
               </div>
 
               <div className="grid grid-cols-[auto_auto_auto_1fr_auto] items-center gap-2 md:gap-3">

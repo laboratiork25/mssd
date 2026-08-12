@@ -298,53 +298,53 @@ export default function ReportForm() {
 
   return (
     <div className="space-y-6">
-      <Card className="max-w-3xl mx-auto">
-        {/* Banner animato satanico */}
-        <div className="mb-8 -mx-6 -mt-6">
-          <div className="relative h-32 md:h-40 w-full">
-            <Image
-              src="/media/gifs/banner.gif"
-              alt="Rituale di segnalazione"
-              fill
-              className="object-cover object-center opacity-85"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-noir/90 via-noir/40 to-transparent" />
-          </div>
-        </div>
+     <Card className="max-w-3xl mx-auto overflow-hidden">
+  {/* Banner animato rituale, integrato nei bordi */}
+  <div className="relative w-full h-32 md:h-40">
+    <Image
+      src="/media/gifs/banner.gif"
+      alt="Rituale di segnalazione"
+      fill
+      className="object-cover object-center"
+      priority
+    />
+    <div className="absolute inset-0 bg-gradient-to-t from-noir/90 via-noir/40 to-transparent" />
+  </div>
 
-        <div className="mb-8">
-          <p className="text-xs uppercase tracking-[0.25em] text-blood-light mb-3">
-            Invio riservato
-          </p>
+  <div className="mb-8 px-6 pt-6">
+    <p className="text-xs uppercase tracking-[0.25em] text-blood-light mb-3">
+      Invio riservato
+    </p>
 
-          <h1 className="font-display text-4xl text-fog mb-3">
-            Nuova segnalazione
-          </h1>
+    <h1 className="font-display text-4xl text-fog mb-3">
+      Nuova segnalazione
+    </h1>
 
-          <p className="text-ash-light leading-relaxed">
-            Ogni segnalazione entra in un rituale interno di revisione, mai in una 
-            gogna pubblica. Compila ogni sezione con informazioni precise, oggettive 
-            e verificabili: il circolo amministrativo prenderà visione solo in forma 
-            riservata e valuterà eventuali passi successivi.
-          </p>
-        </div>
+    <p className="text-ash-light leading-relaxed">
+      Ogni segnalazione entra in un rituale interno di revisione, mai in una 
+      gogna pubblica. Compila ogni sezione con informazioni precise, oggettive 
+      e verificabili: il circolo amministrativo prenderà visione solo in forma 
+      riservata e valuterà eventuali passi successivi.
+    </p>
+  </div>
 
-        <div className="mb-8 rounded-lg border border-blood/30 bg-bordeaux/10 p-4">
-          <p className="text-xs uppercase tracking-[0.22em] text-blood-light mb-2">
-            Avviso importante
-          </p>
+  <div className="mb-8 px-6">
+    <div className="rounded-lg border border-blood/30 bg-bordeaux/10 p-4">
+      <p className="text-xs uppercase tracking-[0.22em] text-blood-light mb-2">
+        Avviso importante
+      </p>
 
-          <p className="text-sm leading-relaxed text-ash-light">
-            Le segnalazioni con recapiti falsi, incompleti, non verificabili,
-            informazioni intenzionalmente fuorvianti o materiale non pertinente
-            potrebbero non essere prese in considerazione. Invia solo elementi
-            necessari alla revisione e non condividere dati sensibili superflui:
-            ciò che entra qui viene trattato con rigore, non con clamore.
-          </p>
-        </div>
+      <p className="text-sm leading-relaxed text-ash-light">
+        Le segnalazioni con recapiti falsi, incompleti, non verificabili,
+        informazioni intenzionalmente fuorvianti o materiale non pertinente
+        potrebbero non essere prese in considerazione. Invia solo elementi
+        necessari alla revisione e non condividere dati sensibili superflui:
+        ciò che entra qui viene trattato con rigore, non con clamore.
+      </p>
+    </div>
+  </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+  <form onSubmit={handleSubmit} className="space-y-6 px-6 pb-6">
           <Input
             label="Titolo della segnalazione"
             name="title"
