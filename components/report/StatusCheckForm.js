@@ -50,20 +50,20 @@ export default function StatusCheckForm() {
 
   function renderStatusDescription(status) {
     switch (status) {
-      case "nuova":
-        return "La pratica è stata evocata e ha varcato la soglia del sistema. È in attesa della prima lettura rituale.";
-      case "in_revisione":
-        return "La pratica è sul tavolo del circolo interno: i dettagli sono in analisi e potrebbero richiedere chiarimenti ai recapiti forniti.";
-      case "confermata":
-        return "La pratica è stata considerata fondata rispetto ai criteri interni della piattaforma. Nessuna esposizione pubblica, solo interventi mirati.";
-      case "respinta":
-        return "La pratica non è stata ritenuta sufficiente o verificabile per procedere oltre. Rimane archiviata, ma non genera azioni.";
-      case "chiusa":
-        return "Il rituale su questo ID è concluso: la pratica è chiusa e non sono previsti ulteriori passaggi, salvo riaperture straordinarie.";
-      case "evento_programmato":
-        return "È stato fissato un evento collegato a questa pratica (call, revisione approfondita o incontro interno) nella data e ora indicate.";
-      default:
-        return "La pratica è registrata nel sistema. Lo stato dettagliato è in aggiornamento interno, lontano da occhi indiscreti.";
+   case "nuova":
+  return "La segnalazione è stata ricevuta e inserita in coda per la prima verifica.";
+case "in_revisione":
+  return "Il team sta analizzando la pratica. Potrebbero essere richiesti chiarimenti ai recapiti forniti.";
+case "confermata":
+  return "La segnalazione è stata valutata come fondata in base ai criteri interni della piattaforma.";
+case "respinta":
+  return "La segnalazione non è stata ritenuta sufficientemente fondata o verificabile.";
+case "chiusa":
+  return "La pratica è chiusa. Non sono previsti ulteriori aggiornamenti, salvo nuovi elementi.";
+case "evento_programmato":
+  return "È stato fissato un appuntamento collegato a questa pratica nella data e ora indicate.";
+default:
+  return "La pratica è registrata nel sistema. Lo stato è in fase di aggiornamento.";
     }
   }
 
@@ -76,7 +76,7 @@ export default function StatusCheckForm() {
           Evento programmato
         </p>
         <p className="text-sm text-fog">
-          Data rituale:{" "}
+          Data evento:{" "}
           <span className="font-medium">
             {report.eventDate}
           </span>{" "}
@@ -102,7 +102,7 @@ export default function StatusCheckForm() {
           <div className="relative h-32 md:h-40 w-full">
             <Image
               src="/media/gifs/banner2.gif"
-              alt="Rituale di verifica stato"
+              alt="Verifica stato"
               fill
               className="object-cover object-center opacity-80"
               priority
@@ -192,8 +192,8 @@ export default function StatusCheckForm() {
           {renderEventInfo(result)}
 
           <p className="text-ash-light text-sm mt-5">
-            Nota rituale: il passaggio tra stati non è istantaneo. A seconda della gravità e del 
-            carico di segnalazioni, l&apos;aggiornamento interno può richiedere diverse ore. 
+            Nota: il passaggio tra stati non è istantaneo. A seconda della gravità e del 
+            carico di segnalazioni, l&apos;aggiornamento interno può richiedere diverse ore (circa 8). 
             Non serve sollecitare pubblicamente: se qualcosa richiede attenzione, il circolo ti 
             contatterà direttamente ai recapiti indicati.
           </p>

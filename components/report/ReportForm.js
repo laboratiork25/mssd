@@ -303,7 +303,7 @@ export default function ReportForm() {
   <div className="relative w-full h-32 md:h-40">
     <Image
       src="/media/gifs/banner.gif"
-      alt="Rituale di segnalazione"
+      alt="Pannello di segnalazione"
       fill
       className="object-cover object-center"
       priority
@@ -321,9 +321,9 @@ export default function ReportForm() {
     </h1>
 
     <p className="text-ash-light leading-relaxed">
-      Ogni segnalazione entra in un rituale interno di revisione, mai in una 
+      Ogni segnalazione entra in revisione, mai in una 
       gogna pubblica. Compila ogni sezione con informazioni precise, oggettive 
-      e verificabili: il circolo amministrativo prenderà visione solo in forma 
+      e verificabili: lo staff amministrativo prenderà visione solo in forma 
       riservata e valuterà eventuali passi successivi.
     </p>
   </div>
