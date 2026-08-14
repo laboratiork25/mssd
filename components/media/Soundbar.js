@@ -11,39 +11,6 @@ function formatTime(seconds) {
   return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
 }
 
-function SpeakerIcon({ muted = false }) {
-  if (muted) {
-    return (
-      <span className="relative block h-5 w-5" aria-hidden="true">
-        <span className="absolute left-[1px] top-[7px] h-[6px] w-[5px] rounded-l-sm bg-fog" />
-
-        <span
-          className="absolute left-[5px] top-[5px] h-[10px] w-[8px] border-r-[8px] border-r-fog border-y-[5px] border-y-transparent"
-          style={{ borderLeft: 0 }}
-        />
-
-        <span className="absolute left-[12px] top-[2px] h-[16px] w-[2px] rotate-45 rounded bg-fog" />
-        <span className="absolute left-[12px] top-[2px] h-[16px] w-[2px] -rotate-45 rounded bg-fog" />
-      </span>
-    );
-  }
-
-  return (
-    <span className="relative block h-5 w-5" aria-hidden="true">
-      <span className="absolute left-[1px] top-[7px] h-[6px] w-[5px] rounded-l-sm bg-fog" />
-
-      <span
-        className="absolute left-[5px] top-[5px] h-[10px] w-[8px] border-r-[8px] border-r-fog border-y-[5px] border-y-transparent"
-        style={{ borderLeft: 0 }}
-      />
-
-      <span className="absolute left-[14px] top-[5px] h-[10px] w-[6px] rounded-r-full border border-fog/80 border-l-transparent" />
-
-      <span className="absolute left-[12px] top-[2px] h-[16px] w-[10px] rounded-r-full border border-fog/50 border-l-transparent" />
-    </span>
-  );
-}
-
 function CloseIcon() {
   return (
     <span
@@ -72,16 +39,15 @@ function Notification({ open, onKeep, onCloseAnyway }) {
 
         <div className="relative p-4 md:p-5">
           <p className="text-[10px] uppercase tracking-[0.28em] text-blood-light/90">
-            Consiglio immersivo
+            Riproduzione attiva
           </p>
 
           <h4 className="mt-2 font-display text-xl text-fog md:text-2xl">
-            Vuoi attivare l’esperienza audio?
+            Vuoi chiudere il player?
           </h4>
 
           <p className="mt-3 text-sm leading-relaxed text-ash-light">
-            La riproduzione sonora è consigliata per un’esperienza più
-            immersiva, ma puoi chiudere comunque il widget.
+            Chiudendo il player, la traccia verrà interrotta.
           </p>
 
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
@@ -90,7 +56,7 @@ function Notification({ open, onKeep, onCloseAnyway }) {
               onClick={onCloseAnyway}
               className="inline-flex items-center justify-center rounded-md border border-blood/40 bg-bordeaux px-4 py-3 text-sm text-fog transition-all hover:bg-blood-light"
             >
-              Chiudi lo stesso
+              Chiudi player
             </button>
 
             <button
@@ -98,7 +64,7 @@ function Notification({ open, onKeep, onCloseAnyway }) {
               onClick={onKeep}
               className="inline-flex items-center justify-center rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm text-fog transition-all hover:bg-white/10"
             >
-              Tieni
+              Continua ascolto
             </button>
           </div>
         </div>
@@ -116,9 +82,6 @@ export default function Soundbar() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
-  const [volume, setVolume] = useState(0.22);
-  const [isMuted, setIsMuted] = useState(false);
-  const [feedback, setFeedback] = useState("Ambience pronta");
   const [isSeeking, setIsSeeking] = useState(false);
   const [visible, setVisible] = useState(true);
   const [showCloseNotice, setShowCloseNotice] = useState(false);
@@ -132,14 +95,8 @@ export default function Soundbar() {
 
     if (!audio) return;
 
-    audio.volume = volume;
-    audio.muted = isMuted;
-  }, [volume, isMuted]);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-
-    if (!audio) return;
+    // Volume fisso: nessun controllo visibile nel player.
+    audio.volume = 0.22;
 
     const syncProgress = () => {
       if (isSeeking) return;
@@ -172,7 +129,6 @@ export default function Soundbar() {
 
       setDuration(nextDuration);
       setCurrentTime(nextTime);
-      setFeedback("Traccia disponibile");
 
       if (seekRef.current) {
         seekRef.current.max = String(nextDuration || 0);
@@ -183,7 +139,6 @@ export default function Soundbar() {
     const handleEnded = () => {
       setIsPlaying(false);
       setCurrentTime(0);
-      setFeedback("Riproduzione terminata");
 
       if (seekRef.current) {
         seekRef.current.value = "0";
@@ -279,14 +234,13 @@ export default function Soundbar() {
       setCurrentTime(nextTime);
       setDuration(nextDuration);
       setIsPlaying(true);
-      setFeedback("Riproduzione attiva");
 
       if (seekRef.current) {
         seekRef.current.max = String(nextDuration || 0);
         seekRef.current.value = String(nextTime);
       }
     } catch {
-      setFeedback("Il browser richiede un'interazione utente per l'audio.");
+      // Il browser blocca l'audio finché l'utente non interagisce.
     }
   }
 
@@ -297,7 +251,6 @@ export default function Soundbar() {
 
     audio.pause();
     setIsPlaying(false);
-    setFeedback("Riproduzione in pausa");
   }
 
   function handleStop() {
@@ -310,7 +263,6 @@ export default function Soundbar() {
 
     setCurrentTime(0);
     setIsPlaying(false);
-    setFeedback("Riproduzione arrestata");
 
     if (seekRef.current) {
       seekRef.current.value = "0";
@@ -353,23 +305,6 @@ export default function Soundbar() {
     handleSeekCommit(Number(event.currentTarget.value));
   }
 
-  function handleVolume(event) {
-    const nextVolume = Number(event.target.value);
-
-    setVolume(nextVolume);
-    setIsMuted(nextVolume === 0);
-  }
-
-  function toggleMute() {
-    setIsMuted((previous) => {
-      const nextMuted = !previous;
-
-      setFeedback(nextMuted ? "Audio silenziato" : "Audio attivato");
-
-      return nextMuted;
-    });
-  }
-
   function requestClose() {
     if (isPlaying) {
       setShowCloseNotice(true);
@@ -395,7 +330,6 @@ export default function Soundbar() {
     setCurrentTime(0);
     setShowCloseNotice(false);
     setVisible(false);
-    setFeedback("Widget chiuso");
   }
 
   if (!mounted) return null;
@@ -431,7 +365,7 @@ export default function Soundbar() {
                 type="button"
                 onClick={requestClose}
                 className="absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/8 bg-white/5 text-fog transition-all hover:bg-white/10 sm:right-3 sm:top-3 sm:h-9 sm:w-9"
-                aria-label="Chiudi soundbar"
+                aria-label="Chiudi player"
               >
                 <CloseIcon />
               </button>
@@ -440,7 +374,7 @@ export default function Soundbar() {
                 For the last time
               </h3>
 
-              <div className="flex flex-col gap-3 md:grid md:grid-cols-[auto_auto_auto_1fr_auto] md:items-center md:gap-3">
+              <div className="flex flex-col gap-3 md:grid md:grid-cols-[auto_auto_1fr] md:items-center md:gap-3">
                 <div className="flex items-center justify-center gap-2 md:contents">
                   <button
                     type="button"
@@ -472,33 +406,15 @@ export default function Soundbar() {
                   >
                     <span className="h-3 w-3 rounded-sm bg-fog md:h-3.5 md:w-3.5" />
                   </button>
-
-                  <button
-                    type="button"
-                    onClick={toggleMute}
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/8 bg-white/5 text-fog transition-all hover:bg-white/10 md:h-11 md:w-11"
-                    aria-label={isMuted ? "Riattiva audio" : "Silenzia audio"}
-                  >
-                    <SpeakerIcon muted={isMuted} />
-                  </button>
                 </div>
 
                 <div className="min-w-0">
                   <div className="mb-1.5 flex items-center justify-between gap-2 text-[10px] text-ash-light sm:gap-3 sm:text-[11px] md:text-xs">
-                    <span className="shrink-0">
-                      {formatTime(currentTime)}
-                    </span>
-
-                    <span className="truncate text-center">
-                      {feedback}
-                    </span>
-
-                    <span className="shrink-0">
-                      {formatTime(duration)}
-                    </span>
+                    <span className="shrink-0">{formatTime(currentTime)}</span>
+                    <span className="shrink-0">{formatTime(duration)}</span>
                   </div>
 
-                  <div className="relative">
+                  <div className="relative flex h-6 items-center">
                     <div className="pointer-events-none absolute left-0 top-1/2 h-1.5 w-full -translate-y-1/2 rounded-full bg-white/8" />
 
                     <div
@@ -523,21 +439,6 @@ export default function Soundbar() {
                       aria-label="Avanzamento traccia"
                     />
                   </div>
-                </div>
-
-                <div className="hidden w-32 items-center gap-2 md:flex">
-                  <span className="text-xs text-ash">Vol</span>
-
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    value={volume}
-                    onChange={handleVolume}
-                    className="soundbar-range w-full appearance-none bg-transparent"
-                    aria-label="Volume audio"
-                  />
                 </div>
               </div>
             </div>

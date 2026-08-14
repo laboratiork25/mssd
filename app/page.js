@@ -8,9 +8,9 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <WhatsappWidget />
       <HowItWorks />
       <ArticlesPreview />
-      <WhatsappWidget />
       <FaqSection />
     </>
   );
