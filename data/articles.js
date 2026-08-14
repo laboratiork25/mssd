@@ -14,10 +14,7 @@ Il processo prevede una prima verifica formale dei dati inseriti (completezza, c
 La piattaforma non emette sentenze, non stabilisce colpe e non si sostituisce ad autorità competenti: il suo ruolo è raccogliere informazioni strutturate e permettere una valutazione interna riservata.
 
 
-Nessuna informazione viene mai pubblicata, condivisa o utilizzata per esporre pubblicamente le persone coinvolte: l'obiettivo è la tutela della community, non la punizione automatica o la gogna pubblica.
-
-
-Lo stato della pratica viene aggiornato progressivamente (ad esempio "Nuova", "In revisione", "Confermata", "Respinta", "Chiusa") e può sempre essere consultato tramite ID pratica e codice di accesso personale.
+Lo stato della pratica viene aggiornato progressivamente (ad esempio "Nuova", "In revisione", "Confermata", "Respinta", "evento", "Chiusa") e può sempre essere consultato tramite ID pratica e codice di accesso personale.
 
 
 Le decisioni prese in sede di revisione restano interne e non costituiscono in alcun modo accertamenti giuridici, sanzioni ufficiali o dichiarazioni di responsabilità legale.`,
@@ -30,8 +27,6 @@ Le decisioni prese in sede di revisione restano interne e non costituiscono in a
       "Quali dati vengono raccolti, come vengono protetti e chi può effettivamente consultarli all'interno della piattaforma.",
     content: `Mossad raccoglie solo le informazioni strettamente necessarie a valutare una segnalazione: titolo, categoria, descrizione, eventuali prove e un contatto opzionale.
 
-
-Le password sono protette con hashing sicuro e le sessioni utente sono gestite tramite cookie non accessibili da script lato client, riducendo il rischio di furto di credenziali.
 
 
 L'accesso ai dettagli completi delle segnalazioni è riservato esclusivamente al team amministrativo autenticato, secondo il principio del minimo privilegio: ogni operatore vede solo ciò che serve al proprio ruolo.
