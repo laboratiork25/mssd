@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getReportStatus } from "../../../../lib/redis";
 
 function isValidCaseId(caseId = "") {
-  return /^MOSS-\d{4}-[A-Z0-9]{6,12}$/.test(caseId.toUpperCase());
+  return /^R\d+$/.test(String(caseId).trim().toUpperCase());
 }
 
 export async function POST(request) {
@@ -36,10 +36,7 @@ export async function POST(request) {
       eventTime: statusData.eventTime || null,
     };
 
-    return NextResponse.json(
-      { report },
-      { status: 200 }
-    );
+    return NextResponse.json({ report }, { status: 200 });
   } catch (error) {
     console.error("Errore POST /api/reports/status-check:", error);
 

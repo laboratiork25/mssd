@@ -1,7 +1,6 @@
-import { nanoid } from "nanoid";
 import { NextResponse } from "next/server";
 import { sendTelegramReportMessage } from "../../../lib/telegram";
-import { saveReportStatus } from "../../../lib/redis";
+import { getNextCaseId, saveReportStatus } from "../../../lib/redis";
 
 function isValidEmail(value = "") {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(value.trim());
@@ -139,9 +138,7 @@ export async function POST(request) {
       );
     }
 
-    const year = new Date().getFullYear();
-    const randomId = nanoid(7).toUpperCase();
-    const caseId = `MOSS-${year}-${randomId}`;
+    const caseId = await getNextCaseId();
 
     const payload = {
       title: body.title.trim(),

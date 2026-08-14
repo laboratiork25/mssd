@@ -11,7 +11,7 @@ import {
 export const runtime = "nodejs";
 
 function isValidCaseId(caseId = "") {
-  return /^MOSS-\d{4}-[A-Z0-9]{6,12}$/.test(caseId.toUpperCase());
+  return /^R\d+$/.test(String(caseId).trim().toUpperCase());
 }
 
 function isValidDate(date = "") {
@@ -50,7 +50,6 @@ async function handleCallbackQuery(callbackQuery) {
 
   if (!callbackId) return;
 
-  // Solo admin possono usare i bottoni
   if (!isTelegramAdmin(from?.id)) {
     await answerCallbackQuery({
       callbackQueryId: callbackId,
@@ -101,12 +100,10 @@ async function handleCommand(message) {
   const chatId = String(message?.chat?.id || "");
   const allowedChatId = String(process.env.TELEGRAM_REPORT_CHAT_ID || "");
 
-  // Comandi validi solo nel gruppo di report
   if (chatId !== allowedChatId) {
     return;
   }
 
-  // Solo admin
   if (!isTelegramAdmin(from?.id)) {
     return;
   }
@@ -125,7 +122,6 @@ async function handleCommand(message) {
       return;
     }
 
-    // Invia messaggio con bottoni di stato
     await sendStatusSelectionMessage({ caseId });
     return;
   }
