@@ -64,7 +64,7 @@ export default function StatusCheckForm() {
       case "chiusa":
         return "La pratica è chiusa. Non sono previsti ulteriori aggiornamenti, salvo nuovi elementi.";
       case "evento_programmato":
-        return "È stato fissato un appuntamento collegato a questa pratica nella data e ora indicate.";
+        return "È stato fissato un'evento collegato a questa pratica nella data e ora indicate. Grazie per la segnalazione.";
       default:
         return "La pratica è registrata nel sistema. Lo stato è in fase di aggiornamento.";
     }
